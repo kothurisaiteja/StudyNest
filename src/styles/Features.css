@@ -1,0 +1,36 @@
+.features{
+    padding:80px 60px;
+    text-align:center;
+}
+
+.features h2{
+    font-size:40px;
+    color:#1E3A8A;
+    margin-bottom:50px;
+}
+
+.feature-container{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.feature-card{
+    width:280px;
+    padding:30px;
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+
+    transition:0.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+
+    box-shadow:0 10px 30px rgba(37,99,235,0.2);
+}
