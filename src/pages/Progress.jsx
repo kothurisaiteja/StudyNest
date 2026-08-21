@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/Progress.css";
-import { getDashboard } from "../services/dashboardService";
+import { getDashboard } from "../services/dashBoardService";
 
 export default function Progress() {
 
