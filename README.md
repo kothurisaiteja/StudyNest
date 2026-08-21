@@ -516,7 +516,3 @@ StudyNest
 Organize • Plan • Track • Improve
 ```
 
-```
-
-**This version will look much better on GitHub** because GitHub renders the badges, tables, headings, diagrams, checkboxes, and code blocks instead of showing it as plain text.
-```
