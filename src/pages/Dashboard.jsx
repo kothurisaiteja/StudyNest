@@ -2,7 +2,7 @@ import Sidebar from "../components/Sidebar";
 import "../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getDashboard } from "../services/dashboardService";
+import { getDashboard } from "../services/dashBoardService";
 
 function Dashboard() {
 
