@@ -1,143 +1,192 @@
-import { useState, useEffect } from "react";
+import "../styles/Assignments.css";
 import Sidebar from "../components/Sidebar";
-import "../styles/Assignments.css"
-export default function Assignments() {
-    const [assignments, setAssignments] = useState(() => {
-        const saved = localStorage.getItem("assignments");
-        if (saved) return JSON.parse(saved);
+import { useState, useEffect } from "react";
 
-        return [
-            {
-                id: 1,
-                title: "DBMS Assignment",
-                subject: "DBMS",
-                priority: "High",
-                dueDate: "2026-07-28",
-                status: "Pending",
-                description: "Solve SQL Join and Normalization questions."
-            },
-            {
-                id: 2,
-                title: "Operating Systems",
-                subject: "OS",
-                priority: "Medium",
-                dueDate: "2026-07-30",
-                status: "Completed",
-                description: "Practice Deadlock algorithms."
-            }
-        ];
-    });
+import {
+    getAssignments as getAssignmentsAPI,
+    createAssignment as createAssignmentAPI,
+    updateAssignment as updateAssignmentAPI,
+    deleteAssignment as deleteAssignmentAPI
+} from "../services/assignmentService";
+
+function Assignments() {
 
     const [showModal, setShowModal] = useState(false);
-    const [search, setSearch] = useState("");
+
+    const [assignments, setAssignments] = useState([]);
 
     const [title, setTitle] = useState("");
     const [subject, setSubject] = useState("");
-    const [priority, setPriority] = useState("Medium");
     const [dueDate, setDueDate] = useState("");
+    const [priority, setPriority] = useState("Medium");
     const [description, setDescription] = useState("");
 
-    const [editId, setEditId] = useState(null);
+    const [editIndex, setEditIndex] = useState(null);
+
+    const [search, setSearch] = useState("");
+
+    const fetchAssignments = async () => {
+
+        try {
+
+            const data = await getAssignmentsAPI();
+
+            setAssignments(data);
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    };
 
     useEffect(() => {
-        localStorage.setItem("assignments", JSON.stringify(assignments));
-    }, [assignments]);
 
-    const resetForm = () => {
-        setTitle("");
-        setSubject("");
-        setPriority("Medium");
-        setDueDate("");
-        setDescription("");
-        setEditId(null);
-    };
+        fetchAssignments();
 
-    const openAddModal = () => {
-        resetForm();
-        setShowModal(true);
-    };
+    }, []);
 
-    const saveAssignment = () => {
-        if (
-            title.trim() === "" ||
-            subject.trim() === "" ||
-            dueDate === ""
-        ) {
-            alert("Please fill all required fields.");
-            return;
+    const saveAssignment = async () => {
+
+        try {
+
+            if (
+                title.trim() === "" ||
+                subject.trim() === "" ||
+                dueDate === ""
+            ) {
+                alert("Please fill all required fields");
+                return;
+            }
+
+            if (editIndex !== null) {
+
+                const assignment = assignments[editIndex];
+
+                await updateAssignmentAPI(
+                    assignment.id,
+                    {
+                        title,
+                        subject,
+                        due_date: dueDate,
+                        status: assignment.status
+                    }
+                );
+
+                setEditIndex(null);
+
+            } else {
+
+                await createAssignmentAPI({
+                    title,
+                    subject,
+                    due_date: dueDate,
+                    status: "Pending"
+                });
+
+            }
+
+            await fetchAssignments();
+
+            setTitle("");
+            setSubject("");
+            setDueDate("");
+            setPriority("Medium");
+            setDescription("");
+
+            setShowModal(false);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Something went wrong!");
+
         }
 
-        if (editId !== null) {
-            setAssignments(
-                assignments.map((item) =>
-                    item.id === editId
-                        ? {
-                            ...item,
-                            title,
-                            subject,
-                            priority,
-                            dueDate,
-                            description
-                        }
-                        : item
-                )
+    };
+
+    const handleDelete = async (id) => {
+
+        try {
+
+            await deleteAssignmentAPI(id);
+
+            await fetchAssignments();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to delete assignment");
+
+        }
+
+    };
+
+    const toggleComplete = async (assignment) => {
+
+        try {
+
+            const newStatus =
+                assignment.status === "Completed"
+                    ? "Pending"
+                    : "Completed";
+
+            await updateAssignmentAPI(
+                assignment.id,
+                {
+                    title: assignment.title,
+                    subject: assignment.subject,
+                    due_date: assignment.due_date,
+                    status: newStatus
+                }
             );
-        } else {
-            const newAssignment = {
-                id: Date.now(),
-                title,
-                subject,
-                priority,
-                dueDate,
-                description,
-                status: "Pending"
-            };
 
-            setAssignments([newAssignment, ...assignments]);
+            await fetchAssignments();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to update assignment");
+
         }
+
+    };
+
+    const openEditModal = (assignment, index) => {
+
+        setTitle(assignment.title);
+
+        setSubject(assignment.subject);
+
+        setDueDate(assignment.due_date);
+
+        setPriority("Medium");
+
+        setDescription("");
+
+        setEditIndex(index);
+
+        setShowModal(true);
+
+    };
+
+    const closeModal = () => {
 
         setShowModal(false);
-        resetForm();
+
+        setEditIndex(null);
+
+        setTitle("");
+        setSubject("");
+        setDueDate("");
+        setPriority("Medium");
+        setDescription("");
+
     };
-
-    const editAssignment = (item) => {
-        setTitle(item.title);
-        setSubject(item.subject);
-        setPriority(item.priority);
-        setDueDate(item.dueDate);
-        setDescription(item.description);
-        setEditId(item.id);
-        setShowModal(true);
-    };
-
-    const deleteAssignment = (id) => {
-        if (!window.confirm("Delete this assignment?")) return;
-
-        setAssignments(assignments.filter((item) => item.id !== id));
-    };
-
-    const toggleStatus = (id) => {
-        setAssignments(
-            assignments.map((item) =>
-                item.id === id
-                    ? {
-                        ...item,
-                        status:
-                            item.status === "Pending"
-                                ? "Completed"
-                                : "Pending"
-                    }
-                    : item
-            )
-        );
-    };
-
-    const filteredAssignments = assignments.filter((item) => {
-        return (
-            item.title.toLowerCase().includes(search.toLowerCase()) ||
-            item.subject.toLowerCase().includes(search.toLowerCase())
-        );
-    });
 
     return (
         <>
@@ -146,124 +195,41 @@ export default function Assignments() {
             <div className="assignments-page">
 
                 <div className="assignments-header">
-                    <h1>Assignments</h1>
+
+                    <div>
+
+                        <h1>📝 Assignments</h1>
+
+                        <p>
+                            Manage your assignments and deadlines.
+                        </p>
+
+                    </div>
 
                     <button
-                        className="add-btn"
-                        onClick={openAddModal}
+                        className="add-assignment-btn"
+                        onClick={() => setShowModal(true)}
                     >
                         + Add Assignment
                     </button>
-                </div>
-
-                <input
-                    className="search-box"
-                    type="text"
-                    placeholder="Search assignments..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-
-                <div className="assignment-grid">
-
-                    {filteredAssignments.length === 0 ? (
-                        <h3>No Assignments Found</h3>
-                    ) : (
-                        filteredAssignments.map((item) => (
-                            <div
-                                className="assignment-card"
-                                key={item.id}
-                            >
-                                <div className="card-top">
-
-                                    <h2>{item.title}</h2>
-
-                                    <span
-                                        className={`priority ${item.priority.toLowerCase()}`}
-                                    >
-                                        {item.priority}
-                                    </span>
-
-                                </div>
-
-                                <p>
-                                    <strong>Subject:</strong>{" "}
-                                    {item.subject}
-                                </p>
-
-                                <p>
-                                    <strong>Due:</strong>{" "}
-                                    {item.dueDate}
-                                </p>
-
-                                <p>
-                                    <strong>Status:</strong>{" "}
-                                    <span
-                                        className={
-                                            item.status === "Completed"
-                                                ? "completed"
-                                                : "pending"
-                                        }
-                                    >
-                                        {item.status}
-                                    </span>
-                                </p>
-
-                                <p>{item.description}</p>
-
-                                <div className="button-group">
-
-                                    <button
-                                        className="edit-btn"
-                                        onClick={() =>
-                                            editAssignment(item)
-                                        }
-                                    >
-                                        Edit
-                                    </button>
-
-                                    <button
-                                        className="delete-btn"
-                                        onClick={() =>
-                                            deleteAssignment(item.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-
-                                    <button
-                                        className="complete-btn"
-                                        onClick={() =>
-                                            toggleStatus(item.id)
-                                        }
-                                    >
-                                        {item.status === "Completed"
-                                            ? "Undo"
-                                            : "Complete"}
-                                    </button>
-
-                                </div>
-
-                            </div>
-                        ))
-                    )}
 
                 </div>
 
                 {showModal && (
+
                     <div className="modal-overlay">
 
                         <div className="modal">
 
                             <h2>
-                                {editId
+                                {editIndex !== null
                                     ? "Edit Assignment"
-                                    : "Add Assignment"}
+                                    : "Add New Assignment"}
                             </h2>
 
                             <input
                                 type="text"
-                                placeholder="Assignment Title"
+                                placeholder="Assignment title"
                                 value={title}
                                 onChange={(e) =>
                                     setTitle(e.target.value)
@@ -279,17 +245,6 @@ export default function Assignments() {
                                 }
                             />
 
-                            <select
-                                value={priority}
-                                onChange={(e) =>
-                                    setPriority(e.target.value)
-                                }
-                            >
-                                <option>High</option>
-                                <option>Medium</option>
-                                <option>Low</option>
-                            </select>
-
                             <input
                                 type="date"
                                 value={dueDate}
@@ -298,9 +253,28 @@ export default function Assignments() {
                                 }
                             />
 
+                            <select
+                                value={priority}
+                                onChange={(e) =>
+                                    setPriority(e.target.value)
+                                }
+                            >
+                                <option value="Low">
+                                    Low
+                                </option>
+
+                                <option value="Medium">
+                                    Medium
+                                </option>
+
+                                <option value="High">
+                                    High
+                                </option>
+                            </select>
+
                             <textarea
-                                rows="5"
                                 placeholder="Description"
+                                rows="5"
                                 value={description}
                                 onChange={(e) =>
                                     setDescription(e.target.value)
@@ -309,21 +283,14 @@ export default function Assignments() {
 
                             <div className="modal-buttons">
 
-                                <button
-                                    className="cancel-btn"
-                                    onClick={() => {
-                                        resetForm();
-                                        setShowModal(false);
-                                    }}
-                                >
+                                <button onClick={closeModal}>
                                     Cancel
                                 </button>
 
-                                <button
-                                    className="save-btn"
-                                    onClick={saveAssignment}
-                                >
-                                    Save
+                                <button onClick={saveAssignment}>
+                                    {editIndex !== null
+                                        ? "Update Assignment"
+                                        : "Save Assignment"}
                                 </button>
 
                             </div>
@@ -331,9 +298,112 @@ export default function Assignments() {
                         </div>
 
                     </div>
+
                 )}
+
+                <div className="search-section">
+
+                    <input
+                        type="text"
+                        placeholder="Search assignments..."
+                        className="search-bar"
+                        value={search}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
+                    />
+
+                </div>
+
+                <div className="assignments-list">
+
+                    {assignments
+                        .filter((assignment) =>
+                            assignment.title
+                                .toLowerCase()
+                                .includes(search.toLowerCase()) ||
+
+                            assignment.subject
+                                .toLowerCase()
+                                .includes(search.toLowerCase())
+                        )
+                        .map((assignment, index) => (
+
+                            <div
+                                className="assignment-card"
+                                key={assignment.id}
+                            >
+
+                                <div className="assignment-info">
+
+                                    <h2>
+                                        {assignment.title}
+                                    </h2>
+
+                                    <p>
+                                        Subject: {assignment.subject}
+                                    </p>
+
+                                    <p>
+                                        Due: {assignment.due_date}
+                                    </p>
+
+                                </div>
+
+                                <div className="assignment-actions">
+
+                                    <span
+                                        className={
+                                            assignment.status === "Completed"
+                                                ? "status completed"
+                                                : "status pending"
+                                        }
+                                    >
+                                        {assignment.status}
+                                    </span>
+
+                                    <button
+                                        onClick={() =>
+                                            toggleComplete(assignment)
+                                        }
+                                    >
+                                        {assignment.status === "Completed"
+                                            ? "Undo"
+                                            : "Complete"}
+                                    </button>
+
+                                    <button
+                                        onClick={() =>
+                                            openEditModal(
+                                                assignment,
+                                                index
+                                            )
+                                        }
+                                    >
+                                        Edit
+                                    </button>
+
+                                    <button
+                                        onClick={() =>
+                                            handleDelete(
+                                                assignment.id
+                                            )
+                                        }
+                                    >
+                                        Delete
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        ))}
+
+                </div>
 
             </div>
         </>
     );
 }
+
+export default Assignments;

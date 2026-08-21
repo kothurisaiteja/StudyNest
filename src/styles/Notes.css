@@ -1,236 +1,598 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+.notes-page {
+    margin-left: 260px;
+    min-height: 100vh;
+
+    padding: 42px 48px;
+
+    background:
+        radial-gradient(circle at 85% 0%,
+            rgba(59, 130, 246, 0.06),
+            transparent 28%),
+        #0b1120;
+
+    color: #f8fafc;
 }
 
-body{
-    background:#f5f7fb;
-    font-family:Arial, Helvetica, sans-serif;
-}
 
-.notes-page{
-    margin-left:260px;
-    min-height:100vh;
-    padding:40px;
-    background:#f5f7fb;
-}
+/* =========================
+   HEADER
+========================= */
 
-.notes-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:35px;
-}
-
-.notes-header h1{
-    font-size:38px;
-    color:#1e293b;
-}
-
-.notes-header p{
-    margin-top:8px;
-    color:#64748b;
-}
-
-.add-note-btn{
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:14px 24px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.add-note-btn:hover{
-    background:#1d4ed8;
-    transform:translateY(-2px);
-}
-
-.search-section{
-    margin-bottom:35px;
-}
-
-.search-bar{
-    width:100%;
-    padding:15px;
-    border-radius:10px;
-    border:1px solid #d1d5db;
-    outline:none;
-    font-size:16px;
-    transition:.3s;
-}
-
-.search-bar:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 8px rgba(37,99,235,.2);
-}
-
-.notes-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:25px;
-}
-
-.note-card{
-    background:white;
-    border-radius:16px;
-    padding:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-    transition:.3s;
-    border-left:5px solid #2563eb;
-}
-
-.note-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 18px 35px rgba(0,0,0,.12);
-}
-
-.note-card h2{
-    color:#1e293b;
-    margin-bottom:12px;
-}
-
-.note-card p{
-    color:#64748b;
-    line-height:1.6;
-    margin-bottom:20px;
-}
-
-.note-footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.note-footer span{
-    color:#94a3b8;
-    font-size:14px;
-}
-
-.note-footer button{
-    border:none;
-    padding:8px 14px;
-    margin-left:8px;
-    border-radius:8px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.note-footer button:first-child{
-    background:#3b82f6;
-    color:white;
-}
-
-.note-footer button:last-child{
-    background:#ef4444;
-    color:white;
-    
-}
-
-.note-footer button:hover{
-    opacity:.9;
-}
-.button-group{
+.notes-header {
     display: flex;
-    gap: 10px;   /* Increase to 12px or 15px if you want more space */
-}
-/* ===== Modal Overlay ===== */
-
-.modal-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: space-between;
+
+    max-width: 1200px;
+
+    margin-bottom: 28px;
+}
+
+.notes-header h1 {
+    font-size: 30px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+.notes-header p {
+    margin-top: 5px;
+
+    color: #94a3b8;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   ADD NOTE BUTTON
+========================= */
+
+.add-note-btn {
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    background: #3b82f6;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.add-note-btn:hover {
+    background: #2563eb;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-section {
+    max-width: 1200px;
+
+    margin-bottom: 22px;
+}
+
+.search-bar {
+    width: 100%;
+
+    padding: 12px 15px;
+
+    border: 1px solid #263449;
+
+    border-radius: 9px;
+
+    background: #111a2a;
+
+    color: #f8fafc;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-bar::placeholder {
+    color: #64748b;
+}
+
+.search-bar:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+
+/* =========================
+   NOTES GRID
+========================= */
+
+.notes-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    max-width: 1200px;
+}
+
+
+/* =========================
+   NOTE CARD
+========================= */
+
+.note-card {
+    position: relative;
+
+    min-height: 210px;
+
+    padding: 22px;
+
+    background: #111a2a;
+
+    border: 1px solid #263449;
+
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.note-card:hover {
+    background: #172235;
+
+    border-color: #3a4a61;
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   CARD ACCENT
+========================= */
+
+.note-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 18px;
+
+    width: 3px;
+    height: 42px;
+
+    background: #3b82f6;
+
+    border-radius: 0 4px 4px 0;
+}
+
+
+/* =========================
+   NOTE TITLE
+========================= */
+
+.note-card h2 {
+    margin-bottom: 12px;
+
+    padding-left: 5px;
+
+    color: #f8fafc;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   NOTE CONTENT
+========================= */
+
+.note-card>p {
+    padding-left: 5px;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 5;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   NOTE FOOTER
+========================= */
+
+.note-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: auto;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #263449;
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+.note-footer>span {
+    color: #64748b;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   ACTION BUTTON GROUP
+========================= */
+
+.button-group {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+/* =========================
+   ALL ACTION BUTTONS
+========================= */
+
+.button-group button {
+    padding: 6px 10px;
+
+    border: 1px solid #334155;
+
+    border-radius: 6px;
+
+    background: #111a2a;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* =========================
+   NORMAL HOVER
+========================= */
+
+.button-group button:hover {
+    background: #253247;
+
+    border-color: #475569;
+
+    color: #ffffff;
+}
+
+
+/* =========================
+   PIN BUTTON
+========================= */
+
+.button-group button:first-child {
+    color: #60a5fa;
+
+    border-color: #31527d;
+}
+
+.button-group button:first-child:hover {
+    background: rgba(59, 130, 246, 0.12);
+
+    border-color: #3b82f6;
+
+    color: #93c5fd;
+}
+
+
+/* =========================
+   EDIT BUTTON
+========================= */
+
+.button-group button:nth-child(2) {
+    color: #cbd5e1;
+
+    border-color: #334155;
+}
+
+.button-group button:nth-child(2):hover {
+    background: #253247;
+
+    border-color: #64748b;
+
+    color: #ffffff;
+}
+
+
+/* =========================
+   DELETE BUTTON
+========================= */
+
+.button-group button:last-child {
+    color: #f87171;
+
+    border-color: #713f46;
+}
+
+.button-group button:last-child:hover {
+    background: rgba(239, 68, 68, 0.12);
+
+    border-color: #ef4444;
+
+    color: #fca5a5;
+}
+
+
+/* =========================
+   MODAL OVERLAY
+========================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.75);
+
     backdrop-filter: blur(5px);
+
+    z-index: 2000;
 }
 
-/* ===== Modal Box ===== */
 
-.modal{
-    width: 500px;
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    animation: popup 0.25s ease;
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    width: 100%;
+
+    max-width: 520px;
+
+    padding: 28px;
+
+    background: #111a2a;
+
+    border: 1px solid #334155;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+    color: #f8fafc;
 }
 
-@keyframes popup{
-    from{
-        opacity:0;
-        transform:scale(0.9);
-    }
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
+.modal h2 {
+    margin-bottom: 22px;
+
+    color: #f8fafc;
+
+    font-size: 21px;
+
+    font-weight: 600;
 }
 
-.modal h2{
-    margin-bottom:20px;
-    color:#1e293b;
-}
+
+/* =========================
+   MODAL INPUT
+========================= */
 
 .modal input,
-.modal textarea{
-    width:100%;
-    padding:12px;
-    margin-bottom:18px;
-    border:1px solid #d1d5db;
-    border-radius:10px;
-    outline:none;
-    font-size:16px;
+.modal textarea {
+    width: 100%;
+
+    margin-bottom: 15px;
+
+    padding: 12px 13px;
+
+    border: 1px solid #263449;
+
+    border-radius: 8px;
+
+    background: #0e1726;
+
+    color: #f8fafc;
+
+    outline: none;
+
+    resize: vertical;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.modal input::placeholder,
+.modal textarea::placeholder {
+    color: #64748b;
 }
 
 .modal input:focus,
-.modal textarea:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 8px rgba(37,99,235,.2);
+.modal textarea:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.modal textarea{
-    resize:none;
+
+/* =========================
+   MODAL BUTTONS
+========================= */
+
+.modal-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 5px;
 }
 
-.modal-buttons{
-    display:flex;
-    justify-content:flex-end;
-    gap:12px;
+.modal-buttons button {
+    padding: 10px 16px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
 }
 
-.modal-buttons button{
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-    transition:0.3s;
+
+/* CANCEL */
+
+.modal-buttons button:first-child {
+    border: 1px solid #334155;
+
+    background: #253247;
+
+    color: #cbd5e1;
 }
 
-.modal-buttons button:first-child{
-    background:#e5e7eb;
-    color:#1f2937;
+.modal-buttons button:first-child:hover {
+    background: #334155;
+
+    border-color: #475569;
+
+    color: #ffffff;
 }
 
-.modal-buttons button:first-child:hover{
-    background:#d1d5db;
+
+/* SAVE */
+
+.modal-buttons button:last-child {
+    border: 1px solid #3b82f6;
+
+    background: #3b82f6;
+
+    color: white;
 }
 
-.modal-buttons button:last-child{
-    background:#2563eb;
-    color:white;
+.modal-buttons button:last-child:hover {
+    background: #2563eb;
+
+    border-color: #2563eb;
 }
 
-.modal-buttons button:last-child:hover{
-    background:#1d4ed8;
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .notes-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .notes-page {
+        margin-left: 0;
+
+        padding: 30px 20px;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .notes-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 16px;
+    }
+
+    .add-note-btn {
+        width: 100%;
+    }
+
+    .notes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .note-footer {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .button-group {
+        width: 100%;
+    }
 }

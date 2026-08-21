@@ -1,10 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../Sidebar.css";
-
+import logo from "../assets/logo.png";
 function Sidebar() {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
     return (
         <div className="sidebar">
-            <h2 className="logo">📚 StudyNest</h2>
+            <div className="sidebar-brand">
+                <img src={logo} alt="StudyNest" className="sidebar-logo" />
+                <span>StudyNest</span>
+            </div>
 
             <nav>
                 <NavLink to="/dashboard" className="nav-item">
@@ -31,6 +39,12 @@ function Sidebar() {
                     ⚙️ Settings
                 </NavLink>
             </nav>
+            <button
+                className="nav-item logout-btn"
+                onClick={handleLogout}
+            >
+                🚪 Logout
+            </button>
         </div>
     );
 }

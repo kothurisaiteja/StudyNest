@@ -1,0 +1,548 @@
+/* =========================================
+   SETTINGS PAGE
+========================================= */
+
+.settings-page {
+    margin-left: 260px;
+    min-height: 100vh;
+
+    padding: 46px 52px;
+
+    background: #0b1120;
+    color: #e2e8f0;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.settings-header {
+    width: 100%;
+    max-width: 820px;
+
+    margin-bottom: 30px;
+}
+
+.settings-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+}
+
+.settings-header h1 {
+    margin: 0;
+
+    color: #f1f5f9;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.6px;
+}
+
+.settings-header p {
+    margin: 7px 0 0;
+
+    color: #718096;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.settings-container {
+    width: 100%;
+    max-width: 820px;
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.settings-section {
+    width: 100%;
+
+    margin-bottom: 16px;
+
+    background: #111a2a;
+
+    border: 1px solid #202d41;
+
+    border-radius: 11px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.section-heading {
+    padding: 19px 22px 17px;
+
+    border-bottom: 1px solid #1d293a;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: #e2e8f0;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.section-heading p {
+    margin: 5px 0 0;
+
+    color: #68788f;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   SETTING ROW
+========================================= */
+
+.setting-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    gap: 24px;
+
+    padding: 20px 22px;
+}
+
+
+/* =========================================
+   TEXT AREA
+========================================= */
+
+.setting-info {
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+.setting-info h3 {
+    margin: 0;
+
+    color: #d7e0eb;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    white-space: normal;
+}
+
+.setting-info p {
+    max-width: 520px;
+
+    margin: 5px 0 0;
+
+    color: #68788f;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    white-space: normal;
+}
+
+
+/* =========================================
+   ACCOUNT STATUS
+========================================= */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+
+    width: auto;
+
+    padding: 5px 9px;
+
+    border: 1px solid rgba(34, 197, 94, 0.18);
+
+    border-radius: 6px;
+
+    background: rgba(34, 197, 94, 0.05);
+
+    color: #86efac;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 5px;
+    height: 5px;
+
+    flex: 0 0 5px;
+
+    border-radius: 50%;
+
+    background: #4ade80;
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+========================================= */
+
+.logout-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    width: auto !important;
+    min-width: 72px;
+    max-width: max-content;
+
+    padding: 7px 13px;
+
+    margin: 0;
+
+    border: 1px solid #663b43;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #e87979;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+.logout-button:hover {
+    background: rgba(239, 68, 68, 0.08);
+
+    border-color: #a94b55;
+
+    color: #fca5a5;
+}
+
+.logout-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.settings-footer {
+    display: flex;
+
+    align-items: center;
+
+    margin-top: 20px;
+
+    padding-left: 2px;
+}
+
+
+/* =========================================
+   BACK TO DASHBOARD
+========================================= */
+
+.back-dashboard {
+    display: inline-flex;
+
+    align-items: center;
+
+    width: auto;
+
+    padding: 6px 0;
+
+    color: #718096;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    text-decoration: none;
+
+    transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.back-dashboard:hover {
+    color: #b0bfd1;
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================
+   IMPORTANT RESET
+   Prevent old CSS from stretching buttons
+========================================= */
+
+.settings-page button {
+    box-sizing: border-box;
+
+    font-family: inherit;
+}
+
+.settings-page .logout-button {
+    position: static;
+
+    transform-origin: center;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .settings-page {
+        margin-left: 0;
+
+        padding: 36px 28px;
+    }
+
+    .settings-container,
+    .settings-header {
+        max-width: none;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .settings-page {
+        padding: 28px 18px;
+    }
+
+    .settings-header h1 {
+        font-size: 25px;
+    }
+
+    .setting-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 14px;
+    }
+
+    .status-badge,
+    .logout-button {
+        align-self: flex-start;
+    }
+}
+
+/* =========================================
+   LOGOUT CONFIRMATION
+========================================= */
+
+.logout-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 3000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(3, 7, 18, 0.72);
+
+    backdrop-filter: blur(4px);
+}
+
+
+.logout-modal {
+    width: min(360px, 100%);
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background: #111a2a;
+
+    border: 1px solid #2a394f;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45);
+}
+
+
+.logout-modal h2 {
+    margin: 0;
+
+    color: #f1f5f9;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    letter-spacing: -0.2px;
+}
+
+
+.logout-modal p {
+    margin: 9px 0 22px;
+
+    color: #718096;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+.logout-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+}
+
+
+/* =========================================
+   CANCEL
+========================================= */
+
+.cancel-logout,
+.confirm-logout {
+    height: 34px;
+
+    padding: 0 13px;
+
+    border-radius: 6px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+
+.cancel-logout {
+    border: 1px solid #334155;
+
+    background: transparent;
+
+    color: #9aa9bc;
+}
+
+.cancel-logout:hover {
+    background: #172235;
+
+    border-color: #475569;
+
+    color: #e2e8f0;
+}
+
+
+/* =========================================
+   CONFIRM LOGOUT
+========================================= */
+
+.confirm-logout {
+    border: 1px solid #713f46;
+
+    background: rgba(239, 68, 68, 0.07);
+
+    color: #e58b91;
+}
+
+.confirm-logout:hover {
+    background: rgba(239, 68, 68, 0.13);
+
+    border-color: #a34b54;
+
+    color: #f3a3a8;
+}

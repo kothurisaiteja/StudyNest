@@ -1,75 +1,72 @@
 import "../styles/Notes.css";
 import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
-
+import {
+    getNotes,
+    createNote as createNoteAPI,
+    updateNote as updateNoteAPI,
+    deleteNote as deleteNoteAPI
+} from "../services/noteService";
 function Notes() {
     const [showModal, setShowModal] = useState(false);
 
-    const [notes, setNotes] = useState(() => {
-        const savedNotes = localStorage.getItem("notes");
-
-        if (savedNotes) {
-            return JSON.parse(savedNotes);
-        }
-
-        return [
-            {
-                title: "DBMS Revision",
-                content: "Normalization, SQL Joins, Transactions, ACID Properties...",
-                date: "Today",
-                pinned: false
-            },
-            {
-                title: "Operating Systems",
-                content: "Deadlocks, Scheduling Algorithms, Paging...",
-                date: "Yesterday",
-                pinned: false
-            }
-        ];
-    });
+    const [notes, setNotes] = useState([]);
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const saveNote = () => {
+    const saveNote = async () => {
+        try {
 
-        if (title.trim() === "" || content.trim() === "") {
-            alert("Please fill all fields");
-            return;
+            if (title.trim() === "" || content.trim() === "") {
+                alert("Please fill all fields");
+                return;
+            }
+
+            if (editIndex !== null) {
+
+                await updateNoteAPI(
+                    notes[editIndex].id,
+                    {
+                        title,
+                        content
+                    }
+                );
+
+                setEditIndex(null);
+
+            } else {
+
+                await createNoteAPI({
+                    title,
+                    content
+                });
+
+            }
+
+            await fetchNotes();
+
+            setTitle("");
+            setContent("");
+            setShowModal(false);
+
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong!");
         }
-
-        if (editIndex !== null) {
-
-            const updatedNotes = [...notes];
-
-            updatedNotes[editIndex] = {
-                ...updatedNotes[editIndex],
-                title,
-                content,
-                date: "Edited just now"
-            };
-
-            setNotes(updatedNotes);
-
-            setEditIndex(null);
-
-        } else {
-
-            const newNote = {
-                title,
-                content,
-                date: "Just now"
-            };
-
-            setNotes([newNote, ...notes]);
-        }
-
-        setTitle("");
-        setContent("");
-        setShowModal(false);
     };
-    const deleteNote = (index) => {
-        const updatedNotes = notes.filter((_, i) => i !== index);
-        setNotes(updatedNotes);
+    const handleDelete = async (id) => {
+        try {
+
+            await deleteNoteAPI(id);
+
+            await fetchNotes();
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Failed to delete note.");
+
+        }
     };
     const togglePin = (index) => {
         const updatedNotes = [...notes];
@@ -82,17 +79,29 @@ function Notes() {
     };
     const [editIndex, setEditIndex] = useState(null);
     const [search, setSearch] = useState("");
+    const fetchNotes = async () => {
 
-    useEffect(() => {
-        const savedNotes = localStorage.getItem("notes");
+        try {
 
-        if (savedNotes) {
-            setNotes(JSON.parse(savedNotes));
+            const data = await getNotes();
+
+            setNotes(data);
+
         }
-    }, []);
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
     useEffect(() => {
-        localStorage.setItem("notes", JSON.stringify(notes));
-    }, [notes]);
+
+        fetchNotes();
+
+    }, []);
+
     return (
         <>
             <Sidebar />
@@ -177,7 +186,7 @@ function Notes() {
                                 <p>{note.content}</p>
 
                                 <div className="note-footer">
-                                    <span>{note.date}</span>
+                                    <span>Recently Added</span>
 
                                     <div className="button-group">
 
@@ -196,7 +205,7 @@ function Notes() {
                                             Edit
                                         </button>
 
-                                        <button onClick={() => deleteNote(index)}>
+                                        <button onClick={() => handleDelete(note.id)}>
                                             Delete
                                         </button>
 

@@ -1,55 +1,268 @@
 import Sidebar from "../components/Sidebar";
 import "../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getDashboard } from "../services/dashboardService";
 
 function Dashboard() {
+
     const navigate = useNavigate();
+
+    const [dashboardData, setDashboardData] = useState({
+        total_notes: 0,
+        total_assignments: 0,
+        pending_assignments: 0,
+        completed_assignments: 0,
+    });
+
+    useEffect(() => {
+
+        const fetchDashboard = async () => {
+
+            try {
+
+                const data = await getDashboard();
+
+                setDashboardData(data);
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        };
+
+        fetchDashboard();
+
+    }, []);
+
+    const totalAssignments =
+        dashboardData.total_assignments;
+
+    const completion =
+        totalAssignments === 0
+            ? 0
+            : Math.round(
+                (dashboardData.completed_assignments /
+                    totalAssignments) * 100
+            );
+
     return (
         <>
             <Sidebar />
 
-            <div className="dashboard">
+            <main className="dashboard">
 
-                <h1>👋 Welcome to StudyNest</h1>
+                <section className="dashboard-header">
 
-                <p className="dashboard-subtitle">
-                    Your AI-powered study companion
-                </p>
+                    <div>
+                        <p className="dashboard-label">
+                            STUDY OVERVIEW
+                        </p>
 
-                <div className="dashboard-cards">
+                        <h1>
+                            Welcome back
+                        </h1>
 
-                    <div className="card" onClick={() => navigate("/notes")}>
-                        <h2>📒 Notes</h2>
-                        <p>Manage all your study notes.</p>
+                        <p className="dashboard-subtitle">
+                            Here's a quick overview of your learning activity.
+                        </p>
                     </div>
+
+                </section>
+
+
+                <section className="stats-grid">
 
                     <div
-                        className="card"
+                        className="stat-card"
+                        onClick={() => navigate("/notes")}
+                    >
+                        <div className="stat-top">
+                            <span className="stat-title">
+                                Notes
+                            </span>
+
+                            <span className="stat-icon blue">
+                                N
+                            </span>
+                        </div>
+
+                        <h2>
+                            {dashboardData.total_notes}
+                        </h2>
+
+                        <p>
+                            Total notes
+                        </p>
+                    </div>
+
+
+                    <div
+                        className="stat-card"
                         onClick={() => navigate("/assignments")}
                     >
-                        <h2>📝 Assignments</h2>
+                        <div className="stat-top">
+                            <span className="stat-title">
+                                Assignments
+                            </span>
+
+                            <span className="stat-icon green">
+                                A
+                            </span>
+                        </div>
+
+                        <h2>
+                            {dashboardData.total_assignments}
+                        </h2>
+
                         <p>
-                            Keep track of deadlines and never miss an assignment.
+                            Total assignments
                         </p>
                     </div>
 
-                    <div className="card">
-                        <h2>📅 Timetable</h2>
+
+                    <div
+                        className="stat-card"
+                        onClick={() => navigate("/assignments")}
+                    >
+                        <div className="stat-top">
+                            <span className="stat-title">
+                                Pending
+                            </span>
+
+                            <span className="stat-icon orange">
+                                P
+                            </span>
+                        </div>
+
+                        <h2>
+                            {dashboardData.pending_assignments}
+                        </h2>
+
                         <p>
-                            View today's classes and plan your weekly schedule.
+                            Need your attention
                         </p>
                     </div>
 
-                    <div className="card">
-                        <h2>📊 Progress</h2>
+
+                    <div
+                        className="stat-card"
+                        onClick={() => navigate("/progress")}
+                    >
+                        <div className="stat-top">
+                            <span className="stat-title">
+                                Completion
+                            </span>
+
+                            <span className="stat-icon purple">
+                                %
+                            </span>
+                        </div>
+
+                        <h2>
+                            {completion}%
+                        </h2>
+
                         <p>
-                            Monitor your learning progress with visual insights.
+                            Assignment completion
                         </p>
                     </div>
 
-                </div>
+                </section>
 
-            </div>
+
+                <section className="dashboard-bottom">
+
+                    <div className="overview-card">
+
+                        <div className="section-heading">
+                            <div>
+                                <h2>
+                                    Learning overview
+                                </h2>
+
+                                <p>
+                                    Your assignment completion
+                                </p>
+                            </div>
+
+                            <span>
+                                {completion}%
+                            </span>
+                        </div>
+
+                        <div className="progress-track">
+
+                            <div
+                                className="progress-value"
+                                style={{
+                                    width: `${completion}%`
+                                }}
+                            />
+
+                        </div>
+
+                        <div className="progress-info">
+
+                            <span>
+                                {dashboardData.completed_assignments} completed
+                            </span>
+
+                            <span>
+                                {dashboardData.pending_assignments} pending
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="quick-card">
+
+                        <div className="section-heading">
+                            <div>
+                                <h2>
+                                    Quick actions
+                                </h2>
+
+                                <p>
+                                    Continue where you left off
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="quick-actions">
+
+                            <button
+                                onClick={() => navigate("/notes")}
+                            >
+                                <span>+ Add note</span>
+                                <span>→</span>
+                            </button>
+
+                            <button
+                                onClick={() => navigate("/assignments")}
+                            >
+                                <span>View assignments</span>
+                                <span>→</span>
+                            </button>
+
+                            <button
+                                onClick={() => navigate("/timetable")}
+                            >
+                                <span>View timetable</span>
+                                <span>→</span>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </main>
         </>
     );
 }
