@@ -1,6 +1,4 @@
-Absolutely. Here is a more **premium GitHub-style README** that you can directly copy into `README.md`.
 
-````markdown
 # 🎓 StudyNest
 
 ### Your Personal Study Companion
