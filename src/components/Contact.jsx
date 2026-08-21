@@ -21,7 +21,7 @@ function Contact() {
                 </p>
 
                 <a
-                    href="mailto:studynest.contact@gmail.com"
+                    href="mailto:kothurisaiteja1@gmail.com"
                     className="contact-link"
                 >
                     <Mail size={15} />

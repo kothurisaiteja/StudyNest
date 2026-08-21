@@ -1,6 +1,7 @@
-from jose import jwt,JWTError
+from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
+import os
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -15,15 +16,17 @@ def verify_password(plain_password: str, hashed_password: str):
         plain_password,
         hashed_password
     )
-SECRET_KEY = "your_secret_key_here_change_this"
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
 
 def create_access_token(data: dict):
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
 
     to_encode.update({"exp": expire})
 
@@ -34,8 +37,6 @@ def create_access_token(data: dict):
     )
 
     return encoded_jwt
-
-from jose import JWTError, jwt
 
 def verify_access_token(token: str):
     try:
