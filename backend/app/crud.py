@@ -66,7 +66,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     if existing_user:
         return None
 
-    hashed_password = auth.hash_password(user.password)
+    hashed_password = security.hash_password(user.password)
 
     db_user = models.User(
         username=user.username,
@@ -236,14 +236,6 @@ def create_timetable(
     db.refresh(db_timetable)
 
     return db_timetable
-
-def get_timetable(
-    db: Session,
-    current_user: models.User
-):
-    return db.query(models.Timetable).filter(
-        models.Timetable.user_id == current_user.id
-    ).all()
 
 def get_timetable(
     db: Session,
