@@ -12,7 +12,6 @@
 </p>
 
 ---
-
 ## ✨ Overview
 
 **StudyNest** is a full-stack student productivity application designed to bring essential academic tools into one simple and organized workspace.
